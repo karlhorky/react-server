@@ -18,7 +18,11 @@ export default (dir = process.cwd()) => {
 		let reactServerRc = null;
 		try {
 			// readFileSync throws if the file doesn't exist.
-			reactServerRc = fs.readFileSync(path.join(dir, REACT_SERVER_RC));
+
+			// FIXME: Pass config path in via args
+			const PATH = 'node_modules/@kununu/react-universal-scripts';
+
+			reactServerRc = fs.readFileSync(path.join(dir, PATH, REACT_SERVER_RC));
 		} catch (e) {} //eslint-disable-line no-empty
 		if (reactServerRc) {
 			return JSON.parse(reactServerRc);
