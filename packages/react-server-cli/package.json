@@ -1,5 +1,5 @@
 {
-  "name": "react-server-cli",
+  "name": "@karlhorky/react-server-cli",
   "version": "0.5.1",
   "description": "A command line to run react-server",
   "main": "target/index.js",
