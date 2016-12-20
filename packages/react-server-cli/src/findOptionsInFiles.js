@@ -5,7 +5,6 @@ import fs from "fs"
 
 const REACT_SERVER_RC = ".reactserverrc";
 const PACKAGE_JSON = "package.json";
-const PATH = process.env.RULES_CONFIG_PATH || ''; //eslint-disable-line no-process-env
 
 // returns an options object that represents the **first** config file found in the
 // search path. if none are found, returns null.
@@ -14,13 +13,15 @@ const PATH = process.env.RULES_CONFIG_PATH || ''; //eslint-disable-line no-proce
 // the package.json. if it finds neither, it goes up a directory and looks again.
 // it returns the contents of the first config file found; it never merges multiple
 // configurations.
-export default (dir = process.cwd()) => {
+export default (args = process.argv) => {
 	do {
 		let reactServerRc = null;
+		let dir = process.cwd();
+		let rulePath = args.rulePath;
 		try {
 			// readFileSync throws if the file doesn't exist.
 
-			reactServerRc = fs.readFileSync(path.join(dir, PATH, REACT_SERVER_RC));
+			reactServerRc = fs.readFileSync(path.join(dir, rulePath, REACT_SERVER_RC));
 		} catch (e) {} //eslint-disable-line no-empty
 		if (reactServerRc) {
 			return JSON.parse(reactServerRc);
