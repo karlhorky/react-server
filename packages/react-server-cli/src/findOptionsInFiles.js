@@ -14,14 +14,15 @@ const PACKAGE_JSON = "package.json";
 // it returns the contents of the first config file found; it never merges multiple
 // configurations.
 export default (args = process.argv) => {
+	let dir = process.cwd();
+
 	do {
 		let reactServerRc = null;
-		let dir = process.cwd();
-		let rulePath = args.rulePath;
+		let rulesPath = args.rulesPath;
 		try {
 			// readFileSync throws if the file doesn't exist.
 
-			reactServerRc = fs.readFileSync(path.join(dir, rulePath, REACT_SERVER_RC));
+			reactServerRc = fs.readFileSync(path.join(dir, rulesPath, REACT_SERVER_RC));
 		} catch (e) {} //eslint-disable-line no-empty
 		if (reactServerRc) {
 			return JSON.parse(reactServerRc);
