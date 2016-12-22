@@ -1,6 +1,9 @@
 {
-  "name": "react-server-cli",
-  "version": "0.5.1",
+  "name": "@karlhorky/react-server-cli",
+  "version": "0.5.1-alpha.1",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "A command line to run react-server",
   "main": "target/index.js",
   "scripts": {
