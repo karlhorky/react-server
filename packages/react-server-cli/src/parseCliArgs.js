@@ -106,8 +106,11 @@ export default (args = process.argv) => {
 			describe: "Output webpack stats to __clientTemp/build/stats.json.  Recommended for use with webpack-bundle-size-analyzer.",
 			default: false,
 			type: "boolean",
-		})
-		.version(function() {
+		}).option('rules-path', {
+			describe: "The base path for the rc files such as reactserverrc, eslintrc and babelrc. This allows you to move your rule files out of the root and grab them from wherever you want.",
+			default: '',
+			type: "string",
+		}).version(function() {
 			return require('../package').version;
 		})
 		.alias('v', 'version')
