@@ -1,6 +1,6 @@
 {
   "name": "@karlhorky/react-server-cli",
-  "version": "0.5.1-experimental.0",
+  "version": "0.5.1-experimental.1",
   "publishConfig": {
     "access": "public"
   },

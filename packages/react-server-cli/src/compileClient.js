@@ -150,6 +150,15 @@ function packageCodeForBrowser(entrypoints, outputDir, outputUrl, hot, minify, l
 					test: /\.jsx?$/,
 					loader: "babel",
 					exclude: /node_modules\/(?!example-review-module)/,
+					// FIXME: Read config from the .babelrc using the webpackConfig function in .reactserverrc when we get that working
+					query: {
+						babelrc: false,
+						presets: [require.resolve('babel-preset-react-server')],
+						// This is a feature of `babel-loader` for webpack (not Babel itself).
+						// It enables caching results in ./node_modules/.cache/babel-loader/
+						// directory for faster rebuilds.
+						cacheDirectory: true,
+					},
 				},
 				{
 					test: /\.css$/,
