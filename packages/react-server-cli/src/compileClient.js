@@ -149,7 +149,7 @@ function packageCodeForBrowser(entrypoints, outputDir, outputUrl, hot, minify, l
 				{
 					test: /\.jsx?$/,
 					loader: "babel",
-					exclude: /node_modules\/(?!example-review-module)/,
+					exclude: /node_modules\/(?!@kununu\/example-review-module)/,
 					// FIXME: Read config from the .babelrc using the webpackConfig function in .reactserverrc when we get that working
 					query: {
 						babelrc: false,
