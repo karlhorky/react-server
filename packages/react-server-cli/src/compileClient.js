@@ -24,6 +24,7 @@ export default (opts = {}) => {
 	const {
 		routes,
 		webpackConfig,
+		rulesPath,
 		workingDir = "./__clientTemp",
 		routesDir = ".",
 		outputDir = workingDir + "/build",
@@ -78,7 +79,7 @@ export default (opts = {}) => {
 	writeWebpackCompatibleRoutesFile(routes, routesDir, workingDirAbsolute, null, true);
 
 	// finally, let's pack this up with webpack.
-	const compiler = webpack(webpackConfigFunc(packageCodeForBrowser(entrypoints, outputDirAbsolute, outputUrl, hot, minify, longTermCaching, stats)));
+	const compiler = webpack(webpackConfigFunc(packageCodeForBrowser(entrypoints, outputDirAbsolute, outputUrl, hot, minify, longTermCaching, stats, rulesPath)));
 
 	const serverRoutes = new Promise((resolve) => {
 		compiler.plugin("done", (stats) => {
@@ -132,9 +133,10 @@ function statsToManifest(stats) {
 	};
 }
 
-function packageCodeForBrowser(entrypoints, outputDir, outputUrl, hot, minify, longTermCaching, stats) {
+function packageCodeForBrowser(entrypoints, outputDir, outputUrl, hot, minify, longTermCaching, stats, rulesPath) {
 	const NonCachingExtractTextLoader = path.join(__dirname, "./NonCachingExtractTextLoader");
 	const extractTextLoader = require.resolve(NonCachingExtractTextLoader) + "?{remove:true}!css-loader";
+	const babelConfig = rulesPath ? JSON.parse(fs.readFileSync(path.resolve(rulesPath + '/.babelrc'))) : {};
 	let webpackConfig = {
 		entry: entrypoints,
 		output: {
@@ -149,7 +151,15 @@ function packageCodeForBrowser(entrypoints, outputDir, outputUrl, hot, minify, l
 				{
 					test: /\.jsx?$/,
 					loader: "babel",
-					exclude: /node_modules/
+					exclude: /node_modules\/(?!@kununu\/example-review-module)/,
+					// FIXME: Read config from the .babelrc using the webpackConfig function in .reactserverrc when we get that working
+					query: {
+						...babelConfig,
+						// This is a feature of `babel-loader` for webpack (not Babel itself).
+						// It enables caching results in ./node_modules/.cache/babel-loader/
+						// directory for faster rebuilds.
+						cacheDirectory: true,
+					},
 				},
 				{
 					test: /\.css$/,
